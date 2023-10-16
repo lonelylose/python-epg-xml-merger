@@ -21,6 +21,22 @@ url = "https://epg.112114.xyz/pp.xml"
 
 # 定义一个函数来下载和合并xml文件，并复制到/var/www/html/目录下，并压缩成gz文件
 def download_and_merge_xml():
+    # 定义一个变量来表示保留天数，可以根据需要修改
+    keep_days = 7
+
+    # 获取当前时间戳（以秒为单位）
+    now = time.time()
+
+    # 遍历当前目录下所有以.xml结尾的文件名
+    for xml_file in glob.glob("*.xml"):
+        # 获取文件的修改时间戳（以秒为单位）
+        mtime = os.path.getmtime(xml_file)
+        # 如果文件修改时间距离当前时间超过了保留天数（以秒为单位），就删除文件
+        if now - mtime > keep_days * 24 * 60 * 60:
+            os.remove(xml_file)
+            # 打印提示信息
+            print(f"Deleted {xml_file}")
+
     response = requests.get(url)
     # 打开文件为写入模式，并指定编码为utf-8
     with open(filename, "w", encoding="utf-8") as f:
