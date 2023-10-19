@@ -21,8 +21,10 @@ url = "https://epg.112114.xyz/pp.xml"
 
 # 定义一个函数来下载和合并xml文件，并复制到/var/www/html/目录下，并压缩成gz文件
 def download_and_merge_xml():
+    # 在这里更新日期变量
+    date = time.strftime("%Y-%m-%d")
     # 定义一个变量来表示保留天数，可以根据需要修改
-    keep_days = 7
+    keep_days = 8
 
     # 获取当前时间戳（以秒为单位）
     now = time.time()
@@ -98,7 +100,7 @@ def download_and_merge_xml():
     print(f"Copied 7D.xml.gz to /var/www/html/")
 
 # 安排每天0点和12点执行下载和合并xml文件的任务
-schedule.every().day.at("00:58").do(download_and_merge_xml)
+schedule.every().day.at("01:44").do(download_and_merge_xml)
 schedule.every().day.at("08:00").do(download_and_merge_xml)
 
 # 创建一个无限循环，检查并执行安排好的任务
